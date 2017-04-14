@@ -3,6 +3,7 @@ var assert = require('assert')
 module.exports = Nanotiming
 
 function Nanotiming (name) {
+  if (!(this instanceof Nanotiming)) return new Nanotiming(name)
   assert.equal(typeof name, 'string', 'Nanotiming: name should be type string')
   this._name = name
   this._enabled = typeof window !== 'undefined' &&
