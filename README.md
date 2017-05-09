@@ -32,18 +32,22 @@ console.log(timings[timings.length - 1]) // log the last entry
 ### `timing = nanotiming([instanceName])`
 Create a new Nanotiming instance. Takes a name for the timing instance.
 
-### `timing.start([methodName])`
+### `uuid = timing.start([methodName])`
 Start a timing. Takes a method name. The method name is concatenated to the
 instance name as `<instanceName>:<methodName>`. If no method name is passed,
 it'll fall back to only using the instance name. It's recommended that per
 instance to either always use method names, or never.
 
-### `timing.end([methodName])`
+Returns a `uuid` that should be passed to `timing.end()` so async timings work.
+
+### `timing.end(uuid, [methodName])`
 End a timing. The name here must be the same as `timing.start()`. If using a
 static name, the `timing.end()` call must resolve on the same tick as
 `timing.start()` to prevent race conditions. If you want to do use this in
 async conditions make sure the name is unique, for example by appending a
 unique id to both start and end.
+
+Takes a timing that is povided by `timing.start()` so async timings work.
 
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)
