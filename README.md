@@ -34,7 +34,7 @@ Create a new Nanotiming instance. Takes a name for the timing instance.
 
 ### `uuid = timing.start([methodName])`
 Start a timing. Takes a method name. The method name is concatenated to the
-instance name as `<instanceName>:<methodName>`. If no method name is passed,
+instance name as `<instanceName>/<methodName>`. If no method name is passed,
 it'll fall back to only using the instance name. It's recommended that per
 instance to either always use method names, or never.
 

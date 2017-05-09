@@ -23,7 +23,7 @@ Nanotiming.prototype.end = function (uuid, partial) {
 
   assert.equal(typeof uuid, 'string', 'Nanotiming.end: uuid should be type string')
 
-  var name = partial ? this._name + ':' + partial : this._name
+  var name = partial ? this._name + '/' + partial : this._name
   var endName = name + '-end-' + uuid
   var startName = name + '-start-' + uuid
   window.performance.mark(endName)
