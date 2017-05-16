@@ -15,12 +15,12 @@ var i = 1000
 while (--i) console.log(i)
 timing.end('my-loop')
 
-// Process marks when we have spare time available
+// Inspect timings when we have spare time available
 window.requestIdleCallback(function () {
-  var name = 'my-timing/my-loop'
-  var timings = window.performance.getEntriesByName(name)
-  console.log(timings[timings.length - 1]) // log the last entry
-  performance.clearMeasures(name)          // be a good citizen and free up memory
+  var timings = window.performance.getEntries()
+  var timing = timings[timings.length - 1]
+  console.log(timing.name, timing.duration) // log the last entry
+  performance.clearMeasures(timing.name)    // be a good citizen and free after use
 })
 ```
 

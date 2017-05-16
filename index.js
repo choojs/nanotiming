@@ -5,6 +5,7 @@ module.exports = Nanotiming
 function Nanotiming (name) {
   if (!(this instanceof Nanotiming)) return new Nanotiming(name)
   assert.equal(typeof name, 'string', 'Nanotiming: name should be type string')
+
   this._name = name
   this._enabled = typeof window !== 'undefined' &&
     window.performance && window.performance.mark
@@ -29,6 +30,7 @@ Nanotiming.prototype.end = function (uuid, partial) {
   window.performance.mark(endName)
 
   ric(function () {
+    name = name + ' [' + uuid + ']'
     window.performance.measure(name, startName, endName)
     window.performance.clearMarks(startName)
     window.performance.clearMarks(endName)
@@ -36,7 +38,7 @@ Nanotiming.prototype.end = function (uuid, partial) {
 }
 
 function createUuid () {
-  return window.performance.now() % 9e6
+  return (window.performance.now() * 100).toFixed()
 }
 
 function ric (cb) {
