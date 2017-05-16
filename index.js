@@ -12,7 +12,7 @@ function Nanotiming (name) {
 
 Nanotiming.prototype.start = function (partial) {
   if (!this._enabled) return
-  var name = partial ? this._name + ':' + partial : this._name
+  var name = partial ? this._name + '/' + partial : this._name
   var uuid = this._uuid()
   window.performance.mark(name + '-start-' + uuid)
   return uuid
