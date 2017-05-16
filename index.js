@@ -13,7 +13,7 @@ function Nanotiming (name) {
 Nanotiming.prototype.start = function (partial) {
   if (!this._enabled) return
   var name = partial ? this._name + '/' + partial : this._name
-  var uuid = this._uuid()
+  var uuid = createUuid()
   window.performance.mark(name + '-start-' + uuid)
   return uuid
 }
@@ -27,15 +27,19 @@ Nanotiming.prototype.end = function (uuid, partial) {
   var endName = name + '-end-' + uuid
   var startName = name + '-start-' + uuid
   window.performance.mark(endName)
-  if (window.requestIdleCallback) {
-    window.requestIdleCallback(function () {
-      window.performance.measure(name, startName, endName)
-    })
-  } else {
+
+  ric(function () {
     window.performance.measure(name, startName, endName)
-  }
+    window.performance.clearMarks(startName)
+    window.performance.clearMarks(endName)
+  })
 }
 
-Nanotiming.prototype._uuid = function () {
+function createUuid () {
   return window.performance.now() % 9e6
+}
+
+function ric (cb) {
+  if (this.hasIdleCallback) window.requestIdleCallback(cb)
+  else setTimeout(cb, 0)
 }
