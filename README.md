@@ -10,22 +10,18 @@ methods. Only works in the browser, does nothing in Node.
 var nanotiming = require('nanotiming')
 var timing = nanotiming('my-timing')
 
-// make sure the buffer doesn't overflow, set this once per application
-if (typeof window !== 'undefined' &&
-  window.performance &&
-  window.performance.getEntriesByName) {
-  window.performance.onresourcetimingbufferfull = function () {
-    window.performance.clearResourceTimings()
-  }
-}
-
 timing.start('my-loop')
 var i = 1000
 while (--i) console.log(i)
 timing.end('my-loop')
 
-var timings = window.performance.getEntriesByName('my-timing:my-loop')
-console.log(timings[timings.length - 1]) // log the last entry
+// Process marks when we have spare time available
+window.requestIdleCallback(function () {
+  var name = 'my-timing/my-loop'
+  var timings = window.performance.getEntriesByName(name)
+  console.log(timings[timings.length - 1]) // log the last entry
+  performance.clearMeasures(name)          // be a good citizen and free up memory
+})
 ```
 
 ## API
@@ -41,13 +37,13 @@ instance to either always use method names, or never.
 Returns a `uuid` that should be passed to `timing.end()` so async timings work.
 
 ### `timing.end(uuid, [methodName])`
-End a timing. The name here must be the same as `timing.start()`. If using a
-static name, the `timing.end()` call must resolve on the same tick as
-`timing.start()` to prevent race conditions. If you want to do use this in
-async conditions make sure the name is unique, for example by appending a
-unique id to both start and end.
+End a timing. The name here must be the same as `timing.start()`. If you want
+to do use this in async conditions make sure the name is unique, for example by
+appending a unique id to both start and end. The `performance.measure()` step
+is performed in a `requestIdleCallback()` tick, so make sure to process
+measures asynchronously, and preferably in later idle callbacks.
 
-Takes a timing that is povided by `timing.start()` so async timings work.
+Takes the uuid that is povided by `timing.start()` so async timings work.
 
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)
