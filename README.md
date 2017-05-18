@@ -8,42 +8,38 @@ methods. Only works in the browser, does nothing in Node.
 ## Usage
 ```js
 var nanotiming = require('nanotiming')
-var timing = nanotiming('my-timing')
 
-timing.start('my-loop')
+var loopTiming = nanotiming('my-timing.my-loop')
 var i = 1000
 while (--i) console.log(i)
-timing.end('my-loop')
+loopTiming()
 
-// Process marks when we have spare time available
+// Inspect timings when we have spare time available
 window.requestIdleCallback(function () {
-  var name = 'my-timing/my-loop'
-  var timings = window.performance.getEntriesByName(name)
-  console.log(timings[timings.length - 1]) // log the last entry
-  performance.clearMeasures(name)          // be a good citizen and free up memory
+  var timings = window.performance.getEntries()
+  var timing = timings[timings.length - 1]
+  console.log(timing.name, timing.duration) // log the last entry
+  performance.clearMeasures(timing.name)    // be a good citizen and free after use
 })
 ```
 
+## Timing names
+Timings inside the view are appended with a unique UUID so they can be cleared
+individually. While there's no strict format for timing formats, we recommend
+using a format along these lines:
+```txt
+choo.render [12356778]
+choo.route('/') [13355671]
+choo.emit('log:debug') [13355675]
+```
+
 ## API
-### `timing = nanotiming([instanceName])`
-Create a new Nanotiming instance. Takes a name for the timing instance.
+### `endTiming = nanotiming(name)`
+Start a new timing.
 
-### `uuid = timing.start([methodName])`
-Start a timing. Takes a method name. The method name is concatenated to the
-instance name as `<instanceName>/<methodName>`. If no method name is passed,
-it'll fall back to only using the instance name. It's recommended that per
-instance to either always use method names, or never.
-
-Returns a `uuid` that should be passed to `timing.end()` so async timings work.
-
-### `timing.end(uuid, [methodName])`
-End a timing. The name here must be the same as `timing.start()`. If you want
-to do use this in async conditions make sure the name is unique, for example by
-appending a unique id to both start and end. The `performance.measure()` step
-is performed in a `requestIdleCallback()` tick, so make sure to process
-measures asynchronously, and preferably in later idle callbacks.
-
-Takes the uuid that is povided by `timing.start()` so async timings work.
+### `endTiming()`
+Close the timing. Measuring the timing is done inside a `requestIdleCallback()`
+tick, so it might not be available immediately.
 
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)
