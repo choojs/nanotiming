@@ -1,47 +1,35 @@
 var assert = require('assert')
 
-module.exports = Nanotiming
+var hasPerf = typeof window !== 'undefined' &&
+  window.performance && window.performance.mark
 
-function Nanotiming (name) {
-  if (!(this instanceof Nanotiming)) return new Nanotiming(name)
-  assert.equal(typeof name, 'string', 'Nanotiming: name should be type string')
+module.exports = nanotiming
 
-  this._name = name
-  this._enabled = typeof window !== 'undefined' &&
-    window.performance && window.performance.mark
-}
+function nanotiming (name) {
+  assert.equal(typeof name, 'string', 'nanotiming: name should be type string')
 
-Nanotiming.prototype.start = function (partial) {
-  if (!this._enabled) return
-  var name = partial ? this._name + '/' + partial : this._name
-  var uuid = createUuid()
-  window.performance.mark(name + '-start-' + uuid)
-  return uuid
-}
+  if (!hasPerf) return noop
 
-Nanotiming.prototype.end = function (uuid, partial) {
-  if (!this._enabled) return
-
-  assert.equal(typeof uuid, 'string', 'Nanotiming.end: uuid should be type string')
-
-  var name = partial ? this._name + '/' + partial : this._name
-  var endName = name + '-end-' + uuid
+  var uuid = (window.performance.now() * 100).toFixed()
   var startName = name + '-start-' + uuid
-  window.performance.mark(endName)
+  window.performance.mark(startName)
 
-  ric(function () {
-    name = name + ' [' + uuid + ']'
-    window.performance.measure(name, startName, endName)
-    window.performance.clearMarks(startName)
-    window.performance.clearMarks(endName)
-  })
-}
+  return function () {
+    var endName = name + '-end-' + uuid
+    window.performance.mark(endName)
 
-function createUuid () {
-  return (window.performance.now() * 100).toFixed()
+    ric(function () {
+      var measureName = name + ' [' + uuid + ']'
+      window.performance.measure(measureName, startName, endName)
+      window.performance.clearMarks(startName)
+      window.performance.clearMarks(endName)
+    })
+  }
 }
 
 function ric (cb) {
   if (this.hasIdleCallback) window.requestIdleCallback(cb)
   else setTimeout(cb, 0)
 }
+
+function noop () {}
