@@ -11,11 +11,11 @@ function nanotiming (name) {
   if (!hasPerf) return noop
 
   var uuid = (window.performance.now() * 100).toFixed()
-  var startName = name + '-start-' + uuid
+  var startName = 'start-' + uuid + '-' + name
   window.performance.mark(startName)
 
   return function () {
-    var endName = name + '-end-' + uuid
+    var endName = 'end-' + uuid + '-' + name
     window.performance.mark(endName)
 
     ric(function () {
