@@ -1,7 +1,7 @@
 var assert = require('assert')
 
-var hasPerf = typeof window !== 'undefined' &&
-  window.performance && window.performance.mark
+var perf = window.performance
+var hasPerf = typeof window !== 'undefined' && perf && perf.mark
 
 module.exports = nanotiming
 
@@ -10,19 +10,23 @@ function nanotiming (name) {
 
   if (!hasPerf) return noop
 
-  var uuid = (window.performance.now() * 100).toFixed()
+  var uuid = (perf.now() * 100).toFixed()
   var startName = 'start-' + uuid + '-' + name
-  window.performance.mark(startName)
+  perf.mark(startName)
 
-  return function () {
+  return function (cb) {
     var endName = 'end-' + uuid + '-' + name
-    window.performance.mark(endName)
+    perf.mark(endName)
 
     ric(function () {
       var measureName = name + ' [' + uuid + ']'
-      window.performance.measure(measureName, startName, endName)
-      window.performance.clearMarks(startName)
-      window.performance.clearMarks(endName)
+      perf.measure(measureName, startName, endName)
+      perf.clearMarks(startName)
+      perf.clearMarks(endName)
+      if (cb) {
+        var measure = perf.getEntriesByName(measureName)[0]
+        cb(measure)
+      }
     })
   }
 }
