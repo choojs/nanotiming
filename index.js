@@ -1,7 +1,7 @@
 var assert = require('assert')
 
-var perf = window.performance
-var hasPerf = typeof window !== 'undefined' && perf && perf.mark
+var perf = typeof window !== 'undefined' && window.performance
+var hasPerf = perf && perf.mark
 
 module.exports = nanotiming
 
@@ -25,7 +25,7 @@ function nanotiming (name) {
       perf.clearMarks(endName)
       if (cb) {
         var measure = perf.getEntriesByName(measureName)[0]
-        cb(measure)
+        cb(measure, name)
       }
     })
   }
