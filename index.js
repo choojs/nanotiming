@@ -36,4 +36,6 @@ function ric (cb) {
   else setTimeout(cb, 0)
 }
 
-function noop () {}
+function noop (cb) {
+  if (cb) ric(cb)
+}
