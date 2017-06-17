@@ -15,7 +15,7 @@ function nanotiming (name) {
   var startName = 'start-' + uuid + '-' + name
   perf.mark(startName)
 
-  return function (cb) {
+  function end (cb) {
     var endName = 'end-' + uuid + '-' + name
     perf.mark(endName)
 
@@ -27,6 +27,9 @@ function nanotiming (name) {
       if (cb) cb(name)
     })
   }
+
+  end.uuid = uuid
+  return end
 }
 
 function noop (cb) {
