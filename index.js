@@ -1,3 +1,4 @@
+var onIdle = require('on-idle')
 var assert = require('assert')
 
 var perf = typeof window !== 'undefined' && window.performance
@@ -18,24 +19,16 @@ function nanotiming (name) {
     var endName = 'end-' + uuid + '-' + name
     perf.mark(endName)
 
-    ric(function () {
+    onIdle(function () {
       var measureName = name + ' [' + uuid + ']'
       perf.measure(measureName, startName, endName)
       perf.clearMarks(startName)
       perf.clearMarks(endName)
-      if (cb) {
-        var measure = perf.getEntriesByName(measureName)[0]
-        cb(measure, name)
-      }
+      if (cb) cb(name)
     })
   }
 }
 
-function ric (cb) {
-  if (this.hasIdleCallback) window.requestIdleCallback(cb)
-  else setTimeout(cb, 0)
-}
-
 function noop (cb) {
-  if (cb) ric(cb)
+  if (cb) onIdle(cb)
 }
