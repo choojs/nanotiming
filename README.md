@@ -37,10 +37,13 @@ choo.emit('log:debug') [13355675]
 ### `endTiming = nanotiming(name)`
 Start a new timing.
 
-### `endTiming([cb(timing, name)])`
+### `endTiming.uuid`
+The unique ID created for the timing.
+
+### `endTiming([cb(name)])`
 Close the timing. Measuring the timing is done inside a `requestIdleCallback()`
 tick, so it might not be available immediately. If a callback is passed it will
-be called with the timing.
+be called with the timing's name.
 
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)
