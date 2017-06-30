@@ -33,6 +33,14 @@ choo.route('/') [13355671]
 choo.emit('log:debug') [13355675]
 ```
 
+## Disabling timings
+Performance timers are still a somewhat experimental technology. While they're
+a great idea conceptually, there might be bugs. To disable timings complete,
+set:
+```js
+window.localStorage.DISABLE_NANOTIMING = true
+```
+
 ## API
 ### `endTiming = nanotiming(name)`
 Start a new timing.
