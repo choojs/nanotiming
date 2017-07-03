@@ -2,7 +2,8 @@ var onIdle = require('on-idle')
 var assert = require('assert')
 
 var hasWindow = typeof window !== 'undefined'
-var disabled = hasWindow && window.localStorage.DISABLE_NANOTIMING === 'true'
+var hasLocalStorage = hasWindow && 'localStorage' in window
+var disabled = hasLocalStorage && window.localStorage.DISABLE_NANOTIMING === 'true'
 var perf = hasWindow && window.performance
 var hasPerf = perf && perf.mark
 
