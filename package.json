@@ -2,7 +2,7 @@
   "name": "nanotiming",
   "description": "Small timing library",
   "repository": "yoshuawuyts/nanotiming",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "scripts": {
     "deps": "dependency-check . && dependency-check . --extra --no-dev",
     "start": "node .",
