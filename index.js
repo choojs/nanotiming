@@ -1,5 +1,6 @@
-var onIdle = require('on-idle')
 var assert = require('assert')
+
+var onIdle = require('./lib/on-idle')
 
 var perf
 var disabled = true
