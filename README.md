@@ -60,10 +60,10 @@ be called with the timing's name.
 [1]: https://nodejs.org/api/documentation.html#documentation_stability_index
 [2]: https://img.shields.io/npm/v/nanotiming.svg?style=flat-square
 [3]: https://npmjs.org/package/nanotiming
-[4]: https://img.shields.io/travis/yoshuawuyts/nanotiming/master.svg?style=flat-square
-[5]: https://travis-ci.org/yoshuawuyts/nanotiming
-[6]: https://img.shields.io/codecov/c/github/yoshuawuyts/nanotiming/master.svg?style=flat-square
-[7]: https://codecov.io/github/yoshuawuyts/nanotiming
+[4]: https://img.shields.io/travis/choojs/nanotiming/master.svg?style=flat-square
+[5]: https://travis-ci.org/choojs/nanotiming
+[6]: https://img.shields.io/codecov/c/github/choojs/nanotiming/master.svg?style=flat-square
+[7]: https://codecov.io/github/choojs/nanotiming
 [8]: http://img.shields.io/npm/dm/nanotiming.svg?style=flat-square
 [9]: https://npmjs.org/package/nanotiming
 [10]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square
