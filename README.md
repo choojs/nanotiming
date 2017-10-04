@@ -9,10 +9,12 @@ methods. Only works in the browser, does nothing in Node.
 ```js
 var nanotiming = require('nanotiming')
 
-var loopTiming = nanotiming('my-timing.my-loop')
+var timing = nanotiming('my-loop') // Start profiling
+
 var i = 1000
 while (--i) console.log(i)
-loopTiming()
+
+timing() // Stop profiling
 
 // Inspect timings when we have spare time available
 window.requestIdleCallback(function () {
