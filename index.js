@@ -25,8 +25,7 @@ function nanotiming (name) {
     perf.mark(endName)
 
     onIdle(function () {
-      var measureName = name + ' [' + uuid + ']'
-      perf.measure(measureName, startName, endName)
+      perf.measure(name, startName, endName)
       perf.clearMarks(startName)
       perf.clearMarks(endName)
       if (cb) cb(name)
