@@ -16,7 +16,7 @@ function nanotiming (name) {
 
   if (disabled) return noop
 
-  var uuid = (perf.now() * 100).toFixed()
+  var uuid = (perf.now() * 10000).toFixed() % Number.MAX_SAFE_INTEGER
   var startName = 'start-' + uuid + '-' + name
   perf.mark(startName)
 
