@@ -2,7 +2,7 @@
   "name": "nanotiming",
   "description": "Small timing library",
   "repository": "choojs/nanotiming",
-  "version": "6.1.4",
+  "version": "6.1.5",
   "scripts": {
     "deps": "dependency-check . && dependency-check . --extra --no-dev",
     "start": "node .",
