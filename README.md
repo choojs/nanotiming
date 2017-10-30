@@ -30,9 +30,9 @@ Timings inside the view are appended with a unique UUID so they can be cleared
 individually. While there's no strict format for timing formats, we recommend
 using a format along these lines:
 ```txt
-choo.render [12356778]
-choo.route('/') [13355671]
-choo.emit('log:debug') [13355675]
+choo.render
+choo.route('/')
+choo.emit('log:debug')
 ```
 
 ## Disabling timings
