@@ -41,7 +41,9 @@ function nanotiming (name) {
 }
 
 function noop (cb) {
-  if (cb) onIdle(function () {
-    cb(new Error('performance api unavailable'))
-  })
+  if (cb) {
+    onIdle(function () {
+      cb(new Error('nanotiming: performance API unavailable'))
+    })
+  }
 }
