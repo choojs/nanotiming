@@ -14,14 +14,17 @@ var timing = nanotiming('my-loop') // Start profiling
 var i = 1000
 while (--i) console.log(i)
 
-timing() // Stop profiling
+// Stop profiling
+timing(function (err) {
+  if (err) return
 
-// Inspect timings when we have spare time available
-window.requestIdleCallback(function () {
-  var timings = window.performance.getEntries()
-  var timing = timings[timings.length - 1]
-  console.log(timing.name, timing.duration) // log the last entry
-  performance.clearMeasures(timing.name)    // be a good citizen and free after use
+  // Inspect timings when we have spare time available
+  window.requestIdleCallback(function () {
+    var timings = window.performance.getEntries()
+    var timing = timings[timings.length - 1]
+    console.log(timing.name, timing.duration) // log the last entry
+    performance.clearMeasures(timing.name)    // be a good citizen and free after use
+  })
 })
 ```
 
@@ -50,10 +53,10 @@ Start a new timing.
 ### `endTiming.uuid`
 The unique ID created for the timing.
 
-### `endTiming([cb(name)])`
+### `endTiming([cb(err, name)])`
 Close the timing. Measuring the timing is done inside a `requestIdleCallback()`
 tick, so it might not be available immediately. If a callback is passed it will
-be called with the timing's name.
+be called with an error (if measuring wasn't successful) and the timing's name.
 
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)

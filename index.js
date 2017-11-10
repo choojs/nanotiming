@@ -25,13 +25,14 @@ function nanotiming (name) {
     perf.mark(endName)
 
     onIdle(function () {
+      var err = null
       try {
         var measureName = name + ' [' + uuid + ']'
         perf.measure(measureName, startName, endName)
         perf.clearMarks(startName)
         perf.clearMarks(endName)
-      } catch (e) { }
-      if (cb) cb(name)
+      } catch (e) { err = e }
+      if (cb) cb(err, name)
     })
   }
 
@@ -40,5 +41,7 @@ function nanotiming (name) {
 }
 
 function noop (cb) {
-  if (cb) onIdle(cb)
+  if (cb) onIdle(function () {
+    cb(new Error('performance api unavailable'))
+  })
 }
