@@ -1,6 +1,5 @@
+var scheduler = require('nanoscheduler')()
 var assert = require('assert')
-
-var onIdle = require('./lib/on-idle')
 
 var perf
 var disabled = true
@@ -24,7 +23,7 @@ function nanotiming (name) {
     var endName = 'end-' + uuid + '-' + name
     perf.mark(endName)
 
-    onIdle(function () {
+    scheduler.push(function () {
       var err = null
       try {
         var measureName = name + ' [' + uuid + ']'
@@ -42,7 +41,7 @@ function nanotiming (name) {
 
 function noop (cb) {
   if (cb) {
-    onIdle(function () {
+    scheduler.push(function () {
       cb(new Error('nanotiming: performance API unavailable'))
     })
   }

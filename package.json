@@ -9,7 +9,9 @@
     "test": "standard && npm run deps",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov"
   },
-  "dependencies": {},
+  "dependencies": {
+    "nanoscheduler": "^1.0.2"
+  },
   "devDependencies": {
     "dependency-check": "^2.8.0",
     "nyc": "^10.2.0",
