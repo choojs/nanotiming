@@ -3,11 +3,14 @@
 [![downloads][8]][9] [![js-standard-style][10]][11]
 
 Small timing library. Useful to integrate into libraries that have multiple
-methods. Only works in the browser, does nothing in Node.
+methods. Works both in the browser and Node. To use this in Node, make sure you
+are using v8.5.0 or greater.
 
 ## Usage
 ```js
 var nanotiming = require('nanotiming')
+// require 'perf_hooks' for Node environment
+// var performance = require('perf_hooks').performance
 
 var timing = nanotiming('my-loop') // Start profiling
 
@@ -15,17 +18,19 @@ var i = 1000
 while (--i) console.log(i)
 
 // Stop profiling
-timing(function (err) {
-  if (err) return
+timing()
 
-  // Inspect timings when we have spare time available
-  window.requestIdleCallback(function () {
-    var timings = window.performance.getEntries()
-    var timing = timings[timings.length - 1]
-    console.log(timing.name, timing.duration) // log the last entry
-    performance.clearMeasures(timing.name)    // be a good citizen and free after use
-  })
-})
+// in the browser
+var timings = window.performance.getEntries()
+var timing = timings[timings.length - 1]
+console.log(timing.name, timing.duration) // log the last entry
+window.performance.clearMeasures(timing.name)    // be a good citizen and free after use
+
+// in Node 
+var timings = performance.getEntries()
+var timing = timings[timings.length - 1]
+console.log(timing.name, timing.duration) // log the last entry
+performance.clearMeasures(timing.name)    // be a good citizen and free after use
 ```
 
 ## Timing names
@@ -40,10 +45,14 @@ choo.emit('log:debug') [13355675]
 
 ## Disabling timings
 Performance timers are still a somewhat experimental technology. While they're
-a great idea conceptually, there might be bugs. To disable timings complete,
-set:
+a great idea conceptually, there might be bugs. To disable timings complete, in
+the browser set:
 ```js
 window.localStorage.DISABLE_NANOTIMING = true
+```
+Alternatively, in Node set:
+```js
+process.env.DISABLE_NANOTIMING = true
 ```
 
 ## API
@@ -55,8 +64,9 @@ The unique ID created for the timing.
 
 ### `endTiming([cb(err, name)])`
 Close the timing. Measuring the timing is done inside a `requestIdleCallback()`
-tick, so it might not be available immediately. If a callback is passed it will
-be called with an error (if measuring wasn't successful) and the timing's name.
+(browser) or `setTimeout` (node) tick, so it might not be available
+immediately. If a callback is passed it will be called with an error (if
+measuring wasn't successful) and the timing's name.
 
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)

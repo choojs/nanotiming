@@ -3,6 +3,8 @@
   "description": "Small timing library",
   "repository": "choojs/nanotiming",
   "version": "7.1.0",
+  "browser": "browser.js",
+  "main": "index.js",
   "scripts": {
     "deps": "dependency-check . && dependency-check . --extra --no-dev",
     "start": "node .",
