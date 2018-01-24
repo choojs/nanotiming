@@ -1,13 +1,13 @@
 var nanotiming = require('./')
 var performance = require('perf_hooks').performance
 
-var timing = nanotiming('my-loop') // Start profiling
+var nanot = nanotiming('my-loop') // Start profiling
 
 var i = 10
 while (--i) console.log(i)
 
 // Stop profiling
-timing()
+nanot()
 
 var timings = performance.getEntries()
 var timing = timings[timings.length - 1]

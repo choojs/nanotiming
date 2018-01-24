@@ -3,12 +3,11 @@
   "description": "Small timing library",
   "repository": "choojs/nanotiming",
   "version": "7.1.0",
-  "browser": "browser.js",
   "main": "index.js",
+  "browser": "browser.js",
   "scripts": {
-    "deps": "dependency-check . && dependency-check . --extra --no-dev",
     "start": "node .",
-    "test": "standard && npm run deps",
+    "test": "standard",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov"
   },
   "dependencies": {

@@ -5,14 +5,14 @@ var disabled = true
 try {
   perf = require('perf_hooks').performance
   disabled = process.env.DISABLE_NANOTIMING || !perf.mark
-} catch (e) {  }
+} catch (e) { }
 
 module.exports = nanotiming
 
 function nanotiming (name) {
   assert.equal(typeof name, 'string', 'nanotiming: name should be type string')
 
-  if (disabled) return cb(new Error('nanotiming: performance API unavailable'))
+  if (disabled) return noop
 
   var uuid = (perf.now() * 10000).toFixed() % Number.MAX_SAFE_INTEGER
   var startName = 'start-' + uuid + '-' + name
@@ -22,13 +22,22 @@ function nanotiming (name) {
     var endName = 'end-' + uuid + '-' + name
     perf.mark(endName)
 
-    var measureName = name + ' [' + uuid + ']'
-    perf.measure(measureName, startName, endName)
-
-    perf.clearMarks(startName)
-    perf.clearMarks(endName)
+    var err = null
+    try {
+      var measureName = name + ' [' + uuid + ']'
+      perf.measure(measureName, startName, endName)
+      perf.clearMarks(startName)
+      perf.clearMarks(endName)
+    } catch (e) { err = e }
+    if (cb) cb(err, name)
   }
 
   end.uuid = uuid
   return end
+}
+
+function noop (cb) {
+  if (cb) {
+    cb(new Error('nanotiming: performance API unavailable'))
+  }
 }
