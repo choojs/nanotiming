@@ -10,6 +10,8 @@ try {
 module.exports = nanotiming
 
 function nanotiming (name) {
+  if (typeof window !== 'undefined') return require('./browser.js')(name) // electron suport
+
   assert.equal(typeof name, 'string', 'nanotiming: name should be type string')
 
   if (disabled) return noop
