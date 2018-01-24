@@ -1,5 +1,6 @@
 node_js:
-- "8.5"
+- "7"
+- "8"
 - "9"
 sudo: false
 language: node_js
