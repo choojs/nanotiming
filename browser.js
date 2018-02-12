@@ -2,10 +2,10 @@ var scheduler = require('nanoscheduler')()
 var assert = require('assert')
 
 var perf
-var disabled = true
+nanotiming.disabled = true
 try {
   perf = window.performance
-  disabled = window.localStorage.DISABLE_NANOTIMING === 'true' || !perf.mark
+  nanotiming.disabled = window.localStorage.DISABLE_NANOTIMING === 'true' || !perf.mark
 } catch (e) { }
 
 module.exports = nanotiming
@@ -13,7 +13,7 @@ module.exports = nanotiming
 function nanotiming (name) {
   assert.equal(typeof name, 'string', 'nanotiming: name should be type string')
 
-  if (disabled) return noop
+  if (nanotiming.disabled) return noop
 
   var uuid = (perf.now() * 10000).toFixed() % Number.MAX_SAFE_INTEGER
   var startName = 'start-' + uuid + '-' + name
