@@ -7,7 +7,7 @@
   "browser": "browser.js",
   "scripts": {
     "start": "node .",
-    "test": "standard && (browserify test.js | tape-run)",
+    "test": "standard && browserify test.js | tape-run",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov"
   },
   "dependencies": {
