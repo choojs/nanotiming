@@ -9,6 +9,8 @@ try {
 
 module.exports = nanotiming
 
+global._nanotiming_id = 0
+
 function nanotiming (name) {
   if (typeof window !== 'undefined') return require('./browser.js')(name) // electron suport
 
@@ -16,17 +18,17 @@ function nanotiming (name) {
 
   if (nanotiming.disabled) return noop
 
-  var uuid = (perf.now() * 10000).toFixed() % Number.MAX_SAFE_INTEGER
-  var startName = 'start-' + uuid + '-' + name
+  var id = (++global._nanotiming_id) % Number.MAX_SAFE_INTEGER
+  var startName = 'start-' + id + '-' + name
   perf.mark(startName)
 
   function end (cb) {
-    var endName = 'end-' + uuid + '-' + name
+    var endName = 'end-' + id + '-' + name
     perf.mark(endName)
 
     var err = null
     try {
-      var measureName = name + ' [' + uuid + ']'
+      var measureName = name + ' [' + id + ']'
       perf.measure(measureName, startName, endName)
       perf.clearMarks(startName)
       perf.clearMarks(endName)
@@ -34,7 +36,7 @@ function nanotiming (name) {
     if (cb) cb(err, name)
   }
 
-  end.uuid = uuid
+  end.id = id
   return end
 }
 
