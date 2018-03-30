@@ -4,13 +4,17 @@
   "repository": "choojs/nanotiming",
   "version": "7.3.0",
   "main": "index.js",
-  "browser": "browser.js",
+  "browser": {
+    "./index.js": "./browser.js",
+    "assert": "nanoassert"
+  },
   "scripts": {
     "start": "node .",
     "test": "standard",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov"
   },
   "dependencies": {
+    "nanoassert": "^1.1.0",
     "nanoscheduler": "^1.0.2"
   },
   "devDependencies": {
