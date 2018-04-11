@@ -2,7 +2,7 @@
   "name": "nanotiming",
   "description": "Small timing library",
   "repository": "choojs/nanotiming",
-  "version": "7.3.0",
+  "version": "7.3.1",
   "main": "index.js",
   "browser": {
     "./index.js": "./browser.js",
