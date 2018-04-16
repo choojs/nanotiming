@@ -10,23 +10,25 @@ try {
 
 module.exports = nanotiming
 
+window._nanotiming_id = 0
+
 function nanotiming (name) {
   assert.equal(typeof name, 'string', 'nanotiming: name should be type string')
 
   if (nanotiming.disabled) return noop
 
-  var uuid = (perf.now() * 10000).toFixed() % Number.MAX_SAFE_INTEGER
-  var startName = 'start-' + uuid + '-' + name
+  var id = (++window._nanotiming_id) % Number.MAX_SAFE_INTEGER
+  var startName = 'start-' + id + '-' + name
   perf.mark(startName)
 
   function end (cb) {
-    var endName = 'end-' + uuid + '-' + name
+    var endName = 'end-' + id + '-' + name
     perf.mark(endName)
 
     scheduler.push(function () {
       var err = null
       try {
-        var measureName = name + ' [' + uuid + ']'
+        var measureName = name + ' [' + id + ']'
         perf.measure(measureName, startName, endName)
         perf.clearMarks(startName)
         perf.clearMarks(endName)
@@ -35,7 +37,7 @@ function nanotiming (name) {
     })
   }
 
-  end.uuid = uuid
+  end.id = id
   return end
 }
 
